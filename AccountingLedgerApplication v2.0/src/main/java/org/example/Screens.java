@@ -152,13 +152,14 @@ public class Screens {
     public void displayReportsMenu() {
         String choice;
         do {
-            simulateTyping("\033[1;35m-------------- REPORTS MENU ---------------\033[0m\n",3);
-            simulateTyping("              1. Month-to-Date Report\n",3);
-            simulateTyping("              2. Previous Month Report\n",3);
-            simulateTyping("              3. Year-to-Date Report\n",3);
-            simulateTyping("              4. Previous Year Report\n",3);
-            simulateTyping("              5. Search by Vendor\n",3);
-            simulateTyping("              6. Back to Ledger Menu\n",3);
+            simulateTyping("\033[1;35m-------------- REPORTS MENU ---------------\033[0m\n", 3);
+            simulateTyping("              1. Month-to-Date Report\n", 3);
+            simulateTyping("              2. Previous Month Report\n", 3);
+            simulateTyping("              3. Year-to-Date Report\n", 3);
+            simulateTyping("              4. Previous Year Report\n", 3);
+            simulateTyping("              5. Search by Vendor\n", 3);
+            simulateTyping("              6. Custom Search\n", 3); // Add this line
+            simulateTyping("              7. Back to Ledger Menu\n", 3); // Update this line
             choice = getUserInput();
 
             switch (choice) {
@@ -175,17 +176,51 @@ public class Screens {
                     reportGenerator.generatePreviousYearReport();
                     break;
                 case "5":
-                    simulateTyping("\033[1;35m-------------- Vendors Name ---------------\033[0m\n",3);
+                    simulateTyping("\033[1;35m-------------- Vendors Name ---------------\033[0m\n", 3);
                     String vendor = getUserInput();
                     reportGenerator.searchByVendor(vendor);
                     break;
                 case "6":
+                    customSearch();
+                    break;
+                case "7":
                     return;
                 default:
-                    simulateTyping("\033[1;31mInvalid option, please try again.\033[0m\n",3);
+                    simulateTyping("\033[1;31mInvalid option, please try again.\033[0m\n", 3);
             }
+        } while (!choice.equals("7"));
+    }
+
+    public void customSearch() {
+        simulateTyping("\033[1;35m-------------- CUSTOM SEARCH ---------------\033[0m\n", 3);
+        simulateTyping("Enter the search criteria (leave blank to skip a field):\n", 3);
+
+        simulateTyping("Start Date (yyyy-mm-dd): ", 3);
+        String startDate = scanner.nextLine().trim();
+
+        simulateTyping("End Date (yyyy-mm-dd): ", 3);
+        String endDate = scanner.nextLine().trim();
+
+        simulateTyping("Description: ", 3);
+        String description = scanner.nextLine().trim();
+
+        simulateTyping("Vendor: ", 3);
+        String vendor = scanner.nextLine().trim();
+
+        simulateTyping("Amount: ", 3);
+        String amountStr = scanner.nextLine().trim();
+        Double amount = amountStr.isEmpty() ? null : Double.parseDouble(amountStr);
+
+        // Perform the search using the transaction manager
+        List<TransactionManager.Transaction> results = transactionManager.customSearch(startDate, endDate, description, vendor, amount);
+
+        // Display the results
+        simulateTyping("              Custom Search Results\n", 1);
+        simulateTyping("\033[1;33mDate        | Time    | Description                    | Vendor                    | Amount\033[0m\n", 1);
+
+        for (TransactionManager.Transaction transaction : results) {
+            simulateTyping(transaction.toString() + "\n", 1);
         }
-        while (!choice.equals("6"));
     }
 
     public void displayAllEntries() {
