@@ -1,8 +1,11 @@
 package org.example;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class TransactionManager {
@@ -42,6 +45,18 @@ public class TransactionManager {
         }
         return payments;
     }
+
+    public List<Transaction> customSearch(String startDate, String endDate, String description, String vendor, Double amount) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return transactions.stream()
+                .filter(t -> (startDate.isEmpty() || !LocalDate.parse(t.getDate(), formatter).isBefore(LocalDate.parse(startDate, formatter))) &&
+                        (endDate.isEmpty() || !LocalDate.parse(t.getDate(), formatter).isAfter(LocalDate.parse(endDate, formatter))) &&
+                        (description.isEmpty() || t.getDescription().equalsIgnoreCase(description)) &&
+                        (vendor.isEmpty() || t.getVendor().equalsIgnoreCase(vendor)) &&
+                        (amount == null || t.getAmount() == amount))
+                .collect(Collectors.toList());
+    }
+
 
     public void readTransactions() {
         File file = new File(filePath);

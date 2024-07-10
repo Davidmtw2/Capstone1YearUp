@@ -114,6 +114,7 @@ public class ReportGenerator {
             transactions.forEach(System.out::println); // Print each transaction
         }
     }
+
     private void simulateTyping(String message, int delay) {
         for (char ch : message.toCharArray()) {
             System.out.print(ch);
