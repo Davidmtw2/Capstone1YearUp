@@ -1,0 +1,21 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+[data-bs-theme="mint"] {
+    --bs-body-color: #{$green-800};
+    --bs-body-color-rgb: #{to-rgb($green-800)};
+    --bs-body-bg: #{$green-100};
+    --bs-body-bg-rgb: #{to-rgb($green-100)};
+    --bs-tertiary-bg: #{$yellow-100};
+  
+    .btn-primary {
+      --bs-btn-bg: #{$green-600};
+      --bs-btn-border-color: #{rgba($white, .25)};
+      --bs-btn-hover-bg: #{$cyan-600};
+      --bs-btn-hover-border-color: #{rgba($white, .25)};
+      --bs-btn-active-bg: #{$cyan-500};
+      --bs-btn-active-border-color: #{rgba($white, .5)};
+      --bs-btn-focus-border-color: #{rgba($white, .5)};
+      --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(7, 130, 80, 0.361);
+    }
+
+  }
